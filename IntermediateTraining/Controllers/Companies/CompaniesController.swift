@@ -8,12 +8,12 @@
 
 import UIKit
 
-class CompaniesController: UITableViewController {
+class CompaniesController: UITableViewController, CreateCompanyControllerDelegate {
     
     
     // MARK: Private Structures
     
-    enum Strings {
+    private enum Strings {
         static let companies = "Companies"
         static let plus = "plus"
         static let cellID = "cellID"
@@ -22,13 +22,13 @@ class CompaniesController: UITableViewController {
     
     // MARK: Private Properties
     
-    private let createCompanyController: CustomNavigationController
-    private var companies: [Company] = [Company(name: "Apple", founded: Date())]
+    private let createCompanyController: CreateCompanyViewController
+    private var companies: [Company] = []
     
     
     // MARK: Lifecycle
     
-    init(createCompanyController: CustomNavigationController) {
+    init(createCompanyController: CreateCompanyViewController) {
         self.createCompanyController = createCompanyController
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,7 +60,9 @@ class CompaniesController: UITableViewController {
     }
     
     @objc private func handleAddCompany() {
-        present(createCompanyController, animated: true, completion: nil)
+        createCompanyController.delegate = self
+        let navController = CustomNavigationController(rootViewController: createCompanyController)
+        present(navController, animated: true, completion: nil)
     }
     
     private func setupTableView() {
@@ -99,6 +101,15 @@ class CompaniesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
+    }
+    
+    
+    // MARK: CreateCompanyControllerDelegate
+    
+    func didAddCompany(_ company: Company) {
+        companies.append(company)
+        let newIndexPath = IndexPath(row: companies.count - 1, section: 0)
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
 }
 
