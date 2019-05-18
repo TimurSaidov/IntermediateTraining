@@ -18,6 +18,8 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         static let companies = "Companies"
         static let plus = "plus"
         static let cellID = "cellID"
+        static let delete = "Delete"
+        static let edit = "Edit"
     }
     
     
@@ -116,6 +118,31 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: Strings.delete) { [weak self] (_, indexPath) in
+            guard let self = self else { return }
+            let company = self.companies[indexPath.row]
+            // Delete from tableView.
+            self.companies.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            // Delete from CoreData.
+            guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return }
+            let context = persistantContainer.viewContext
+            context.delete(company)
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+        let editAction = UITableViewRowAction(style: .normal, title: Strings.edit) { (_, indexPath) in
+            
+        }
+        
+        return [deleteAction, editAction]
     }
     
     
