@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class CreateCompanyViewController: UIViewController {
     
@@ -19,15 +20,18 @@ class CreateCompanyViewController: UIViewController {
         static let save = "Save"
         static let name = "Name"
         static let enterName = "Enter name"
+        static let company = "Company"
     }
     
     
     // MARK: Public Properties
     
-    var delegate: CreateCompanyControllerDelegate?
+//    var delegate: CreateCompanyControllerDelegate?
 
     
     // MARK: Private Properties
+    
+    private var coreDataStack: CoreDataStack
     
     private let lightBlueBackgroundView: UIView = {
         let view = UIView()
@@ -52,6 +56,15 @@ class CreateCompanyViewController: UIViewController {
     
     
     // MARK: Lifecycle
+    
+    init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,14 +102,29 @@ class CreateCompanyViewController: UIViewController {
     }
     
     @objc private func handleSave() {
-        dismiss(animated: true) { [weak self] in
-            guard
-                let self = self,
-                let name = self.nameTextField.text
-                else { return }
-            let company = Company(name: name, founded: Date())
-            self.delegate?.didAddCompany(company)
+        let persistantContainer = coreDataStack.persistentContainer
+        let context = persistantContainer.viewContext
+        
+//        let company = NSEntityDescription.insertNewObject(forEntityName: Strings.company, into: context)
+//        company.setValue(nameTextField.text, forKey: Strings.name)
+        let company = Company(context: context)
+        company.name = nameTextField.text
+        
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
         }
+        
+//        dismiss(animated: true) { [weak self] in
+//            guard
+//                let self = self,
+//                let name = self.nameTextField.text
+//                else { return }
+//            let company = Company(name: name, founded: Date())
+//            self.delegate?.didAddCompany(company)
+//        }
+        
     }
     
     private func setupView() {

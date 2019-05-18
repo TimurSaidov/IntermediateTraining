@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class CompaniesController: UITableViewController, CreateCompanyControllerDelegate {
+class CompaniesController: UITableViewController { //, CreateCompanyControllerDelegate {
     
     
     // MARK: Private Structures
@@ -23,13 +24,15 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     // MARK: Private Properties
     
     private let createCompanyController: CreateCompanyViewController
+    private let coreDataStack: CoreDataStack
     private var companies: [Company] = []
     
     
     // MARK: Lifecycle
     
-    init(createCompanyController: CreateCompanyViewController) {
+    init(createCompanyController: CreateCompanyViewController, coreDataStack: CoreDataStack) {
         self.createCompanyController = createCompanyController
+        self.coreDataStack = coreDataStack
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,6 +45,17 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         
         setupNavBar()
         setupTableView()
+        
+        let persistantContainer = coreDataStack.persistentContainer
+        let context = persistantContainer.viewContext
+        let fetchRequest: NSFetchRequest<Company> = Company.fetchRequest()
+        
+        do {
+            companies = try context.fetch(fetchRequest)
+            print(companies)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     
@@ -60,7 +74,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     @objc private func handleAddCompany() {
-        createCompanyController.delegate = self
+//        createCompanyController.delegate = self
         let navController = CustomNavigationController(rootViewController: createCompanyController)
         present(navController, animated: true, completion: nil)
     }
@@ -106,10 +120,10 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     
     // MARK: CreateCompanyControllerDelegate
     
-    func didAddCompany(_ company: Company) {
-        companies.append(company)
-        let newIndexPath = IndexPath(row: companies.count - 1, section: 0)
-        tableView.insertRows(at: [newIndexPath], with: .automatic)
-    }
+//    func didAddCompany(_ company: Company) {
+//        companies.append(company)
+//        let newIndexPath = IndexPath(row: companies.count - 1, section: 0)
+//        tableView.insertRows(at: [newIndexPath], with: .automatic)
+//    }
 }
 
