@@ -22,6 +22,10 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         static let edit = "Edit"
     }
     
+    private enum Numbers {
+        static let height: CGFloat = 50
+    }
+    
     
     // MARK: Private Properties
     
@@ -64,9 +68,9 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     @objc private func handleAddCompany() {
+        createCompanyController.removeData()
         createCompanyController.delegate = self
-        let navController = CustomNavigationController(rootViewController: createCompanyController)
-        present(navController, animated: true, completion: nil)
+        presentCreateCompanyScreen()
     }
     
     private func setupTableView() {
@@ -89,6 +93,34 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         }
     }
     
+    private func handleDelete(action: UITableViewRowAction, indexPath: IndexPath) {
+        let company = self.companies[indexPath.row]
+        // Delete from tableView.
+        companies.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        // Delete from CoreData.
+        guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return }
+        let context = persistantContainer.viewContext
+        context.delete(company)
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func handleEdit(action: UITableViewRowAction, indexPath: IndexPath) {
+        createCompanyController.removeData()
+        createCompanyController.delegate = self
+        createCompanyController.company = companies[indexPath.row]
+        presentCreateCompanyScreen()
+    }
+    
+    private func presentCreateCompanyScreen() {
+        let navController = CustomNavigationController(rootViewController: createCompanyController)
+        present(navController, animated: true, completion: nil)
+    }
+    
     
     // MARK: TableViewDataSource
     
@@ -107,6 +139,10 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Numbers.height
+    }
+    
     
     // MARK: TableViewDelegate
     
@@ -117,31 +153,14 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return Numbers.height
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: .destructive, title: Strings.delete) { [weak self] (_, indexPath) in
-            guard let self = self else { return }
-            let company = self.companies[indexPath.row]
-            // Delete from tableView.
-            self.companies.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            // Delete from CoreData.
-            guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return }
-            let context = persistantContainer.viewContext
-            context.delete(company)
-            do {
-                try context.save()
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        
-        let editAction = UITableViewRowAction(style: .normal, title: Strings.edit) { (_, indexPath) in
-            
-        }
-        
+        let deleteAction = UITableViewRowAction(style: .destructive, title: Strings.delete, handler: handleDelete)
+        deleteAction.backgroundColor = UIColor.lightRed
+        let editAction = UITableViewRowAction(style: .normal, title: Strings.edit, handler: handleEdit)
+        editAction.backgroundColor = UIColor.darkBlue
         return [deleteAction, editAction]
     }
     
@@ -152,6 +171,12 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         companies.append(company)
         let newIndexPath = IndexPath(row: companies.count - 1, section: 0)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
+    
+    func didEditCompany(_ company: Company) {
+        guard let row = companies.firstIndex(of: company) else { return }
+        let reloadIndexPath = IndexPath(row: row, section: 0)
+        tableView.reloadRows(at: [reloadIndexPath], with: .automatic)
     }
 }
 

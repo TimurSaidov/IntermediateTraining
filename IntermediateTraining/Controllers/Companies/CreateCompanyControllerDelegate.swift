@@ -10,4 +10,5 @@ import Foundation
 
 protocol CreateCompanyControllerDelegate {
     func didAddCompany(_ company: Company)
+    func didEditCompany(_ company: Company)
 }

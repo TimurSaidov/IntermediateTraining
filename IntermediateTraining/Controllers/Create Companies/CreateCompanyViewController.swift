@@ -16,6 +16,7 @@ class CreateCompanyViewController: UIViewController {
     
     private enum Strings {
         static let createCompany = "Create Company"
+        static let editCompany = "Edit Company"
         static let cancel = "Cancel"
         static let save = "Save"
         static let name = "Name"
@@ -27,6 +28,11 @@ class CreateCompanyViewController: UIViewController {
     // MARK: Public Properties
     
     var delegate: CreateCompanyControllerDelegate?
+    var company: Company? {
+        didSet {
+            nameTextField.text = company?.name
+        }
+    }
 
     
     // MARK: Private Properties
@@ -65,50 +71,10 @@ class CreateCompanyViewController: UIViewController {
         super.viewWillAppear(animated)
         
         setupNavBar()
-        removeData()
     }
     
     
     // MARK: Private
-    
-    private func setupNavBar() {
-        navigationItem.title = Strings.createCompany
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = UIColor.lightRed
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancel, style: .plain, target: self, action: #selector(handleCancel))
-        navigationItem.leftBarButtonItem?.tintColor = .white
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.save, style: .done, target: self, action: #selector(handleSave))
-        navigationItem.rightBarButtonItem?.tintColor = .white
-    }
-    
-    @objc private func handleCancel() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc private func handleSave() {
-        guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return }
-        let context = persistantContainer.viewContext
-        
-//        let company = NSEntityDescription.insertNewObject(forEntityName: Strings.company, into: context)
-//        company.setValue(nameTextField.text, forKey: Strings.name)
-        let company = Company(context: context)
-        company.name = nameTextField.text
-        
-        do {
-            try context.save()
-            
-            dismiss(animated: true) {
-                self.delegate?.didAddCompany(company)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
     
     private func setupView() {
         view.backgroundColor = UIColor.darkBlue
@@ -133,7 +99,86 @@ class CreateCompanyViewController: UIViewController {
         nameTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
-    private func removeData() {
+    private func setupNavBar() {
+        navigationItem.title = company == nil ? Strings.createCompany : Strings.editCompany
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = UIColor.lightRed
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancel, style: .plain, target: self, action: #selector(handleCancel))
+        navigationItem.leftBarButtonItem?.tintColor = .white
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.save, style: .done, target: self, action: #selector(handleSave))
+        navigationItem.rightBarButtonItem?.tintColor = .white
+    }
+    
+    @objc private func handleCancel() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func handleSave() {
+        if company == nil {
+            createCompany()
+        } else {
+            saveCompanyChanges()
+        }
+    }
+    
+    private func createCompany() {
+        guard let context = createContext() else { return }
+        
+//        let company = NSEntityDescription.insertNewObject(forEntityName: Strings.company, into: context)
+//        company.setValue(nameTextField.text, forKey: Strings.name)
+        let company = Company(context: context) // Initializes a managed object subclass and inserts it into the specified managed object context -> context.perform {...} doen't needed.
+        company.name = nameTextField.text
+        
+        do {
+            try context.save()
+            
+            dismiss(animated: true) {
+                self.delegate?.didAddCompany(company)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func saveCompanyChanges() {
+        guard
+            let context = createContext(),
+            let company = company
+            else { return }
+        
+        context.perform { [weak self] in
+            guard let self = self else { return }
+            
+            company.name = self.nameTextField.text
+            
+            do {
+                try context.save()
+                
+                self.dismiss(animated: true) {
+                    self.delegate?.didEditCompany(company)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func createContext() -> NSManagedObjectContext? {
+        guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return nil }
+        return persistantContainer.viewContext
+    }
+    
+    
+    // MARK: Public
+    
+    func removeData() {
+        delegate = nil
+        company = nil
         nameTextField.text = .empty
     }
 }
