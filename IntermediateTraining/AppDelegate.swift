@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Public Properties
     
     var window: UIWindow?
-    lazy var coreDataStack = CoreDataStack()
+    lazy var coreDataStack = CoreDataStack.shared
 
 
     // MARK: Lifecycle
@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.coreDataStack.saveContext()
+        coreDataStack.saveContext()
     }
     
     
@@ -57,8 +57,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.makeKeyAndVisible()
         
-        let createCompanyController = CreateCompanyViewController(coreDataStack: coreDataStack)
-        let companiesController = CompaniesController(createCompanyController: createCompanyController, coreDataStack: coreDataStack)
+        let createCompanyController = CreateCompanyViewController()
+        let companiesController = CompaniesController(createCompanyController: createCompanyController)
         window?.rootViewController = CustomNavigationController(rootViewController: companiesController)
     }
 }

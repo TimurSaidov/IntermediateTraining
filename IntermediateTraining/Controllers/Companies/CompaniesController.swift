@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CompaniesController: UITableViewController { //, CreateCompanyControllerDelegate {
+class CompaniesController: UITableViewController, CreateCompanyControllerDelegate {
     
     
     // MARK: Private Structures
@@ -24,15 +24,13 @@ class CompaniesController: UITableViewController { //, CreateCompanyControllerDe
     // MARK: Private Properties
     
     private let createCompanyController: CreateCompanyViewController
-    private let coreDataStack: CoreDataStack
     private var companies: [Company] = []
     
     
     // MARK: Lifecycle
     
-    init(createCompanyController: CreateCompanyViewController, coreDataStack: CoreDataStack) {
+    init(createCompanyController: CreateCompanyViewController) {
         self.createCompanyController = createCompanyController
-        self.coreDataStack = coreDataStack
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,17 +43,7 @@ class CompaniesController: UITableViewController { //, CreateCompanyControllerDe
         
         setupNavBar()
         setupTableView()
-        
-        let persistantContainer = coreDataStack.persistentContainer
-        let context = persistantContainer.viewContext
-        let fetchRequest: NSFetchRequest<Company> = Company.fetchRequest()
-        
-        do {
-            companies = try context.fetch(fetchRequest)
-            print(companies)
-        } catch {
-            print(error.localizedDescription)
-        }
+        fetchCompanies()
     }
     
     
@@ -74,7 +62,7 @@ class CompaniesController: UITableViewController { //, CreateCompanyControllerDe
     }
     
     @objc private func handleAddCompany() {
-//        createCompanyController.delegate = self
+        createCompanyController.delegate = self
         let navController = CustomNavigationController(rootViewController: createCompanyController)
         present(navController, animated: true, completion: nil)
     }
@@ -84,6 +72,19 @@ class CompaniesController: UITableViewController { //, CreateCompanyControllerDe
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Strings.cellID)
         tableView.separatorColor = .white
         tableView.tableFooterView = UIView()
+    }
+    
+    private func fetchCompanies() {
+        guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return }
+        let context = persistantContainer.viewContext
+        let fetchRequest: NSFetchRequest<Company> = Company.fetchRequest()
+        
+        do {
+            companies = try context.fetch(fetchRequest)
+            tableView.reloadData()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     
@@ -120,10 +121,10 @@ class CompaniesController: UITableViewController { //, CreateCompanyControllerDe
     
     // MARK: CreateCompanyControllerDelegate
     
-//    func didAddCompany(_ company: Company) {
-//        companies.append(company)
-//        let newIndexPath = IndexPath(row: companies.count - 1, section: 0)
-//        tableView.insertRows(at: [newIndexPath], with: .automatic)
-//    }
+    func didAddCompany(_ company: Company) {
+        companies.append(company)
+        let newIndexPath = IndexPath(row: companies.count - 1, section: 0)
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
 }
 

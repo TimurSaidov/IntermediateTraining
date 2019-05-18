@@ -8,6 +8,6 @@
 
 import Foundation
 
-//protocol CreateCompanyControllerDelegate {
-//    func didAddCompany(_ company: Company)
-//}
+protocol CreateCompanyControllerDelegate {
+    func didAddCompany(_ company: Company)
+}

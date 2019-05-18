@@ -26,12 +26,10 @@ class CreateCompanyViewController: UIViewController {
     
     // MARK: Public Properties
     
-//    var delegate: CreateCompanyControllerDelegate?
+    var delegate: CreateCompanyControllerDelegate?
 
     
     // MARK: Private Properties
-    
-    private var coreDataStack: CoreDataStack
     
     private let lightBlueBackgroundView: UIView = {
         let view = UIView()
@@ -56,15 +54,6 @@ class CreateCompanyViewController: UIViewController {
     
     
     // MARK: Lifecycle
-    
-    init(coreDataStack: CoreDataStack) {
-        self.coreDataStack = coreDataStack
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,7 +91,7 @@ class CreateCompanyViewController: UIViewController {
     }
     
     @objc private func handleSave() {
-        let persistantContainer = coreDataStack.persistentContainer
+        guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return }
         let context = persistantContainer.viewContext
         
 //        let company = NSEntityDescription.insertNewObject(forEntityName: Strings.company, into: context)
@@ -112,19 +101,13 @@ class CreateCompanyViewController: UIViewController {
         
         do {
             try context.save()
+            
+            dismiss(animated: true) {
+                self.delegate?.didAddCompany(company)
+            }
         } catch {
             print(error.localizedDescription)
         }
-        
-//        dismiss(animated: true) { [weak self] in
-//            guard
-//                let self = self,
-//                let name = self.nameTextField.text
-//                else { return }
-//            let company = Company(name: name, founded: Date())
-//            self.delegate?.didAddCompany(company)
-//        }
-        
     }
     
     private func setupView() {

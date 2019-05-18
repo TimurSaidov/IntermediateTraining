@@ -12,6 +12,11 @@ import CoreData
 class CoreDataStack {
     
     
+    // Public Properties
+    
+    static let shared = CoreDataStack()
+    
+    
     // MARK: Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {
