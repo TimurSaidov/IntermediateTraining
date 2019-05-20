@@ -20,6 +20,7 @@
 		39C797962290558D00164320 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C797952290558D00164320 /* CoreDataStack.swift */; };
 		39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5B82292B5E200AA34BF /* FormatterDate.swift */; };
 		39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */; };
+		39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		39C797952290558D00164320 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		39E7C5B82292B5E200AA34BF /* FormatterDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterDate.swift; sourceTree = "<group>"; };
 		39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
+		39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			children = (
 				39C797842290165400164320 /* UIColor+Extensions.swift */,
 				39C7978D22902CE900164320 /* String+Extensions.swift */,
+				39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				39C797702290072E00164320 /* CompaniesController.swift in Sources */,
 				39C7976E2290072E00164320 /* AppDelegate.swift in Sources */,
 				39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */,
+				39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */,
 				39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */,
 				39C7978E22902CE900164320 /* String+Extensions.swift in Sources */,
 				39C7978C22901A8500164320 /* CreateCompanyViewController.swift in Sources */,
