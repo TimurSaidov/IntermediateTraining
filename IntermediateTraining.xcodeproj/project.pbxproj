@@ -21,6 +21,7 @@
 		39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5B82292B5E200AA34BF /* FormatterDate.swift */; };
 		39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */; };
 		39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */; };
+		39E7C5C3229305FE00AA34BF /* PopUpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5C2229305FE00AA34BF /* PopUpService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		39E7C5B82292B5E200AA34BF /* FormatterDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterDate.swift; sourceTree = "<group>"; };
 		39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
 		39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
+		39E7C5C2229305FE00AA34BF /* PopUpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,9 +134,8 @@
 		39C797942290557900164320 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				39C797952290558D00164320 /* CoreDataStack.swift */,
-				39C797742290072E00164320 /* IntermediateTraining.xcdatamodeld */,
-				39E7C5B82292B5E200AA34BF /* FormatterDate.swift */,
+				39E7C5C02292F8F700AA34BF /* CoreData */,
+				39E7C5C12292F8FF00AA34BF /* FormatterDate */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -151,8 +152,26 @@
 			isa = PBXGroup;
 			children = (
 				39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */,
+				39E7C5C2229305FE00AA34BF /* PopUpService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		39E7C5C02292F8F700AA34BF /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				39C797952290558D00164320 /* CoreDataStack.swift */,
+				39C797742290072E00164320 /* IntermediateTraining.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		39E7C5C12292F8FF00AA34BF /* FormatterDate */ = {
+			isa = PBXGroup;
+			children = (
+				39E7C5B82292B5E200AA34BF /* FormatterDate.swift */,
+			);
+			path = FormatterDate;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,6 +251,7 @@
 				39C797702290072E00164320 /* CompaniesController.swift in Sources */,
 				39C7976E2290072E00164320 /* AppDelegate.swift in Sources */,
 				39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */,
+				39E7C5C3229305FE00AA34BF /* PopUpService.swift in Sources */,
 				39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */,
 				39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */,
 				39C7978E22902CE900164320 /* String+Extensions.swift in Sources */,

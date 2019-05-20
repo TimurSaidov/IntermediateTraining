@@ -20,6 +20,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         static let cellID = "cellID"
         static let delete = "Delete"
         static let edit = "Edit"
+        static let emptyCompanyImage = "select_photo_empty"
     }
     
     private enum Numbers {
@@ -133,10 +134,17 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         cell.backgroundColor = UIColor.tealColor
         
         let company = companies[indexPath.row]
-        if let name = company.name, let founded = company.founded {
+        
+        if let imageData = company.image, let founded = company.founded, let name = company.name {
+            cell.imageView?.image = UIImage(data: imageData)
+            let foundedDate = FormatterDate.df.string(from: founded)
+            cell.textLabel?.text = "\(name) - Founded: \(foundedDate)"
+        } else if let founded = company.founded, let name = company.name {
+            cell.imageView?.image = UIImage(named: Strings.emptyCompanyImage)
             let foundedDate = FormatterDate.df.string(from: founded)
             cell.textLabel?.text = "\(name) - Founded: \(foundedDate)"
         } else {
+            cell.imageView?.image = UIImage(named: Strings.emptyCompanyImage)
             cell.textLabel?.text = company.name
         }
         cell.textLabel?.textColor = .white
@@ -184,4 +192,3 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         tableView.reloadRows(at: [reloadIndexPath], with: .automatic)
     }
 }
-
