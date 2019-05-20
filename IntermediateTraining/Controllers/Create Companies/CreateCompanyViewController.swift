@@ -95,17 +95,21 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
     
     private func setupNavBar() {
         navigationItem.title = company == nil ? Strings.createCompany : Strings.editCompany
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = UIColor.lightRed
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        guard let navigationController = navigationController else { return }
+        setupNavBarColorAndTint(navigationController)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancel, style: .plain, target: self, action: #selector(handleCancel))
-        navigationItem.leftBarButtonItem?.tintColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.save, style: .done, target: self, action: #selector(handleSave))
-        navigationItem.rightBarButtonItem?.tintColor = .white
+    }
+    
+    private func setupNavBarColorAndTint(_ navigationController: UINavigationController) {
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.barTintColor = UIColor.lightRed
+        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        navigationController.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        navigationController.navigationBar.tintColor = .white
     }
     
     private func setupView() {
@@ -225,5 +229,12 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
             companyImageView.image = originalImage
         }
         dismiss(animated: true, completion: nil)
+    }
+    
+    
+    // MARK: UINavigationControllerDelegate
+    
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        setupNavBarColorAndTint(navigationController)
     }
 }
