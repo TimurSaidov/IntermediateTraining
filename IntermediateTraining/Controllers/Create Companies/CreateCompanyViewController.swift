@@ -31,6 +31,8 @@ class CreateCompanyViewController: UIViewController {
     var company: Company? {
         didSet {
             nameTextField.text = company?.name
+            guard let founded = company?.founded else { return }
+            datePicker.date = founded
         }
     }
 
@@ -58,19 +60,25 @@ class CreateCompanyViewController: UIViewController {
         return textfield
     }()
     
+    private let datePicker: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = .date
+        dp.translatesAutoresizingMaskIntoConstraints = false
+        return dp
+    }()
+    
     
     // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavBar()
         setupView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        setupNavBar()
+    deinit {
+        print("CreateCompanyViewController \(#function)")
     }
     
     
@@ -83,7 +91,7 @@ class CreateCompanyViewController: UIViewController {
         lightBlueBackgroundView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         lightBlueBackgroundView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         lightBlueBackgroundView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        lightBlueBackgroundView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        lightBlueBackgroundView.heightAnchor.constraint(equalToConstant: 250).isActive = true
         
         view.addSubview(nameLabel)
         nameLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -97,6 +105,12 @@ class CreateCompanyViewController: UIViewController {
         nameTextField.leftAnchor.constraint(equalTo: nameLabel.rightAnchor).isActive = true
         nameTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 16).isActive = true
         nameTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        view.addSubview(datePicker)
+        datePicker.topAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
+        datePicker.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        datePicker.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        datePicker.bottomAnchor.constraint(equalTo: lightBlueBackgroundView.bottomAnchor).isActive = true
     }
     
     private func setupNavBar() {
@@ -133,6 +147,7 @@ class CreateCompanyViewController: UIViewController {
 //        company.setValue(nameTextField.text, forKey: Strings.name)
         let company = Company(context: context) // Initializes a managed object subclass and inserts it into the specified managed object context -> context.perform {...} doen't needed.
         company.name = nameTextField.text
+        company.founded = datePicker.date
         
         do {
             try context.save()
@@ -155,6 +170,7 @@ class CreateCompanyViewController: UIViewController {
             guard let self = self else { return }
             
             company.name = self.nameTextField.text
+            company.founded = self.datePicker.date
             
             do {
                 try context.save()
@@ -171,14 +187,5 @@ class CreateCompanyViewController: UIViewController {
     private func createContext() -> NSManagedObjectContext? {
         guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return nil }
         return persistantContainer.viewContext
-    }
-    
-    
-    // MARK: Public
-    
-    func removeData() {
-        delegate = nil
-        company = nil
-        nameTextField.text = .empty
     }
 }

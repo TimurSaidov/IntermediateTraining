@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack.shared
+    let service = ServiceAssembly()
 
 
     // MARK: Lifecycle
@@ -57,8 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.makeKeyAndVisible()
         
-        let createCompanyController = CreateCompanyViewController()
-        let companiesController = CompaniesController(createCompanyController: createCompanyController)
+        let companiesController = CompaniesController(service: service)
         window?.rootViewController = CustomNavigationController(rootViewController: companiesController)
     }
 }

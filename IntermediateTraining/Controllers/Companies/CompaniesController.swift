@@ -29,14 +29,14 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     
     // MARK: Private Properties
     
-    private let createCompanyController: CreateCompanyViewController
+    private let service: ServiceAssembly
     private var companies: [Company] = []
     
     
     // MARK: Lifecycle
     
-    init(createCompanyController: CreateCompanyViewController) {
-        self.createCompanyController = createCompanyController
+    init(service: ServiceAssembly) {
+        self.service = service
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,9 +68,9 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     @objc private func handleAddCompany() {
-        createCompanyController.removeData()
+        let createCompanyController = service.createCompanyController
         createCompanyController.delegate = self
-        presentCreateCompanyScreen()
+        presentCreateCompanyScreen(createCompanyController: createCompanyController)
     }
     
     private func setupTableView() {
@@ -110,13 +110,13 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     private func handleEdit(action: UITableViewRowAction, indexPath: IndexPath) {
-        createCompanyController.removeData()
+        let createCompanyController = service.createCompanyController
         createCompanyController.delegate = self
         createCompanyController.company = companies[indexPath.row]
-        presentCreateCompanyScreen()
+        presentCreateCompanyScreen(createCompanyController: createCompanyController)
     }
     
-    private func presentCreateCompanyScreen() {
+    private func presentCreateCompanyScreen(createCompanyController: CreateCompanyViewController) {
         let navController = CustomNavigationController(rootViewController: createCompanyController)
         present(navController, animated: true, completion: nil)
     }
@@ -133,7 +133,12 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         cell.backgroundColor = UIColor.tealColor
         
         let company = companies[indexPath.row]
-        cell.textLabel?.text = company.name
+        if let name = company.name, let founded = company.founded {
+            let foundedDate = FormatterDate.df.string(from: founded)
+            cell.textLabel?.text = "\(name) - Founded: \(foundedDate)"
+        } else {
+            cell.textLabel?.text = company.name
+        }
         cell.textLabel?.textColor = .white
         cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return cell
