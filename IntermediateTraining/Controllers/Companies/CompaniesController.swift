@@ -72,7 +72,8 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     @objc private func handleReset() {
-        guard let context = createContext() else { return }
+        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
+        let context = coreDataStack.createContext()
         
         companies.forEach { company in
             context.delete(company)
@@ -109,7 +110,8 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     private func fetchCompanies() {
-        guard let context = createContext() else { return }
+        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
+        let context = coreDataStack.createContext()
         let fetchRequest: NSFetchRequest<Company> = Company.fetchRequest()
         
         do {
@@ -118,11 +120,6 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         } catch {
             print(error.localizedDescription)
         }
-    }
-    
-    private func createContext() -> NSManagedObjectContext? {
-        guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return nil }
-        return persistantContainer.viewContext
     }
     
     private func handleDelete(action: UITableViewRowAction, indexPath: IndexPath) {

@@ -23,6 +23,16 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
         static let enterName = "Enter name"
         static let company = "Company"
         static let emptyCompanyImage = "select_photo_empty"
+        static let action = "Выберите действие"
+    }
+    
+    private enum Numbers {
+        static let lightBlueViewHeight: CGFloat = 350
+        static let topConstant: CGFloat = 8
+        static let leftConstant: CGFloat = 16
+        static let companyImageViewHeight: CGFloat = 100
+        static let nameLabelHeight: CGFloat = 50
+        static let quality: CGFloat = 0.75
     }
     
     
@@ -45,13 +55,6 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
     // MARK: Private Properties
     
     private let popUpService = PopUpService()
-    
-    private let lightBlueBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.lightBlue
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     
     lazy private var companyImageView: UIImageView = { // lazy private var - To add gesture recognize.
         let imageView = UIImageView(image: UIImage(named: Strings.emptyCompanyImage))
@@ -113,7 +116,6 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
         setupNavBarColorAndTint(navigationController)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancel, style: .plain, target: self, action: #selector(handleCancel))
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.save, style: .done, target: self, action: #selector(handleSave))
     }
     
@@ -129,30 +131,26 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
     private func setupView() {
         view.backgroundColor = UIColor.darkBlue
         
-        view.addSubview(lightBlueBackgroundView)
-        lightBlueBackgroundView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        lightBlueBackgroundView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        lightBlueBackgroundView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        lightBlueBackgroundView.heightAnchor.constraint(equalToConstant: 350).isActive = true
+        let lightBlueBackgroundView = setupLightBlueBackground(height: Numbers.lightBlueViewHeight)
         
         view.addSubview(companyImageView)
-        companyImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
-        companyImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        companyImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: Numbers.topConstant).isActive = true
+        companyImageView.heightAnchor.constraint(equalToConstant: Numbers.companyImageViewHeight).isActive = true
         companyImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        companyImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        companyImageView.widthAnchor.constraint(equalToConstant: Numbers.companyImageViewHeight).isActive = true
         
         view.addSubview(nameLabel)
         nameLabel.topAnchor.constraint(equalTo: companyImageView.bottomAnchor).isActive = true
-        nameLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
-        nameLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        nameLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nameLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: Numbers.leftConstant).isActive = true
+        nameLabel.widthAnchor.constraint(equalToConstant: Numbers.companyImageViewHeight).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: Numbers.nameLabelHeight).isActive = true
 //        nameLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
         
         view.addSubview(nameTextField)
         nameTextField.topAnchor.constraint(equalTo: companyImageView.bottomAnchor).isActive = true
         nameTextField.leftAnchor.constraint(equalTo: nameLabel.rightAnchor).isActive = true
-        nameTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 16).isActive = true
-        nameTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        nameTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: Numbers.leftConstant).isActive = true
+        nameTextField.heightAnchor.constraint(equalToConstant: Numbers.nameLabelHeight).isActive = true
         
         view.addSubview(datePicker)
         datePicker.topAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
@@ -175,7 +173,7 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
     
     @objc private func handleSelectPhoto() {
         let alertController = popUpService.makeSelectPhotoPopUp(
-            title: "Выберите действие",
+            title: Strings.action,
             message: nil,
             preferredStyle: .actionSheet,
             completionToSelectPhoto: {
@@ -196,7 +194,8 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
     }
     
     private func createCompany() {
-        guard let context = createContext() else { return }
+        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
+        let context = coreDataStack.createContext()
         
 //        let company = NSEntityDescription.insertNewObject(forEntityName: Strings.company, into: context)
 //        company.setValue(nameTextField.text, forKey: Strings.name)
@@ -207,7 +206,7 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
             let companyImage = companyImageView.image,
             companyImage != UIImage(named: Strings.emptyCompanyImage)
         {
-            let imageData = companyImage.jpegData(compressionQuality: 0.75)
+            let imageData = companyImage.jpegData(compressionQuality: Numbers.quality)
             company.image = imageData
         }
         
@@ -224,10 +223,11 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
     
     private func saveCompanyChanges() {
         guard
-            let context = createContext(),
+            let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack,
             let company = company
             else { return }
         
+        let context = coreDataStack.createContext()
         context.perform { [weak self] in
             guard let self = self else { return }
             
@@ -237,7 +237,7 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
                 let companyImage = self.companyImageView.image,
                 companyImage != UIImage(named: Strings.emptyCompanyImage)
             {
-                let imageData = companyImage.jpegData(compressionQuality: 0.75)
+                let imageData = companyImage.jpegData(compressionQuality: Numbers.quality)
                 company.image = imageData
             } else {
                 company.image = nil
@@ -253,11 +253,6 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
                 print(error.localizedDescription)
             }
         }
-    }
-    
-    private func createContext() -> NSManagedObjectContext? {
-        guard let persistantContainer = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack.persistentContainer else { return nil }
-        return persistantContainer.viewContext
     }
     
     

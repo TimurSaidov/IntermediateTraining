@@ -47,6 +47,13 @@ class CoreDataStack {
     }()
     
     
+    // MARK: Public
+    
+    func createContext() -> NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
+    
+    
     // MARK: Core Data Saving support
     
     func saveContext () {
