@@ -20,12 +20,13 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         static let cellID = "cellID"
         static let delete = "Delete"
         static let edit = "Edit"
-        static let emptyCompanyImage = "select_photo_empty"
         static let reset = "Reset"
     }
     
     private enum Numbers {
-        static let height: CGFloat = 50
+        static let height: CGFloat = 60
+        static let viewHeight: CGFloat = 150
+        static let fontSize: CGFloat = 16
     }
     
     
@@ -102,7 +103,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     
     private func setupTableView() {
         tableView.backgroundColor = UIColor.darkBlue
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Strings.cellID)
+        tableView.register(CompaniesTableViewCell.self, forCellReuseIdentifier: Strings.cellID)
         tableView.separatorColor = .white
         tableView.tableFooterView = UIView()
     }
@@ -160,25 +161,11 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.cellID, for: indexPath)
-        cell.backgroundColor = UIColor.tealColor
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.cellID, for: indexPath) as! CompaniesTableViewCell
         
         let company = companies[indexPath.row]
+        cell.company = company
         
-        if let imageData = company.image, let founded = company.founded, let name = company.name {
-            cell.imageView?.image = UIImage(data: imageData)
-            let foundedDate = FormatterDate.df.string(from: founded)
-            cell.textLabel?.text = "\(name) - Founded: \(foundedDate)"
-        } else if let founded = company.founded, let name = company.name {
-            cell.imageView?.image = UIImage(named: Strings.emptyCompanyImage)
-            let foundedDate = FormatterDate.df.string(from: founded)
-            cell.textLabel?.text = "\(name) - Founded: \(foundedDate)"
-        } else {
-            cell.imageView?.image = UIImage(named: Strings.emptyCompanyImage)
-            cell.textLabel?.text = company.name
-        }
-        cell.textLabel?.textColor = .white
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return cell
     }
     
@@ -196,7 +183,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return companies.count == 0 ? 150 : 0
+        return companies.count == 0 ? Numbers.viewHeight : 0
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -204,7 +191,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         label.text = "No companies available ..."
         label.textColor = .white
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: Numbers.fontSize)
         return label
     }
     

@@ -18,6 +18,7 @@
 		39C7978E22902CE900164320 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7978D22902CE900164320 /* String+Extensions.swift */; };
 		39C7979022902E6200164320 /* CreateCompanyControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7978F22902E6200164320 /* CreateCompanyControllerDelegate.swift */; };
 		39C797962290558D00164320 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C797952290558D00164320 /* CoreDataStack.swift */; };
+		39E211712297FABE004F3DE6 /* CompaniesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E211702297FABE004F3DE6 /* CompaniesTableViewCell.swift */; };
 		39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5B82292B5E200AA34BF /* FormatterDate.swift */; };
 		39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */; };
 		39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */; };
@@ -38,6 +39,7 @@
 		39C7978D22902CE900164320 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		39C7978F22902E6200164320 /* CreateCompanyControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCompanyControllerDelegate.swift; sourceTree = "<group>"; };
 		39C797952290558D00164320 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		39E211702297FABE004F3DE6 /* CompaniesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesTableViewCell.swift; sourceTree = "<group>"; };
 		39E7C5B82292B5E200AA34BF /* FormatterDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterDate.swift; sourceTree = "<group>"; };
 		39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
 		39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			children = (
 				39C7978F22902E6200164320 /* CreateCompanyControllerDelegate.swift */,
 				39C7976F2290072E00164320 /* CompaniesController.swift */,
+				39E211702297FABE004F3DE6 /* CompaniesTableViewCell.swift */,
 			);
 			path = Companies;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */,
 				39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */,
 				39C7978E22902CE900164320 /* String+Extensions.swift in Sources */,
+				39E211712297FABE004F3DE6 /* CompaniesTableViewCell.swift in Sources */,
 				39C7978C22901A8500164320 /* CreateCompanyViewController.swift in Sources */,
 				39C797762290072E00164320 /* IntermediateTraining.xcdatamodeld in Sources */,
 			);
