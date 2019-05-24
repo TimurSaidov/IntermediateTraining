@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class EmployeesTableViewController: UITableViewController {
+class EmployeesTableViewController: UITableViewController, CreateEmployeeControllerDelegate {
 
     
     // MARK: Public Properties
@@ -19,6 +20,7 @@ class EmployeesTableViewController: UITableViewController {
     // MARK: Private Structures
     
     private enum Strings {
+        static let cellID = "cellID"
         static let plus = "plus"
     }
     
@@ -26,6 +28,7 @@ class EmployeesTableViewController: UITableViewController {
     // MARK: Private Properties
     
     private let manager = CreateManager()
+    private var employees = [Employee]()
     
     
     // MARK: Lifecycle
@@ -35,6 +38,7 @@ class EmployeesTableViewController: UITableViewController {
 
         setupNavBar()
         setupTableView()
+        fetchEmployees()
     }
     
     deinit {
@@ -52,34 +56,51 @@ class EmployeesTableViewController: UITableViewController {
     
     @objc private func handleAddEmployee() {
         let createEmployeeController = manager.createEmployeeController
+        createEmployeeController.delegate = self
         let navController = UINavigationController(rootViewController: createEmployeeController)
         present(navController, animated: true, completion: nil)
     }
     
     private func setupTableView() {
         tableView.backgroundColor = UIColor.darkBlue
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Strings.cellID)
+    }
+    
+    private func fetchEmployees() {
+        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
+        let context = coreDataStack.createContext()
+        let fetchRequest: NSFetchRequest<Employee> = Employee.fetchRequest()
+        
+        do {
+            employees = try context.fetch(fetchRequest)
+            tableView.reloadData()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
 
     // MARK: Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return employees.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.cellID, for: indexPath)
 
-        // Configure the cell...
-
+        let employee = employees[indexPath.row]
+        cell.textLabel?.text = employee.name
+        
         return cell
     }
-    */
+    
+    
+    // MARK: CreateEmployeeControllerDelegate
+    
+    func didAddEmployee(_ employee: Employee) {
+        employees.append(employee)
+        let newIndexPath = IndexPath(row: employees.count - 1, section: 0)
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
 }

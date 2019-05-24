@@ -11,6 +11,11 @@ import UIKit
 class CreateEmployeeViewController: UIViewController {
     
     
+    // MARK: Public Properties
+    
+    var delegate: CreateEmployeeControllerDelegate?
+    
+    
     // MARK: Private Structures
     
     private enum Strings {
@@ -31,7 +36,7 @@ class CreateEmployeeViewController: UIViewController {
     }
     
     
-    // MARK: Private properties
+    // MARK: Private Properties
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -95,8 +100,9 @@ class CreateEmployeeViewController: UIViewController {
         
         do {
             try context.save()
-            
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true) { [weak self] in
+                self?.delegate?.didAddEmployee(employee)
+            }
         } catch {
             print(error.localizedDescription)
         }

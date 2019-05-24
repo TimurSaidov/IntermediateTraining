@@ -213,8 +213,8 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
         do {
             try context.save()
             
-            dismiss(animated: true) {
-                self.delegate?.didAddCompany(company)
+            dismiss(animated: true) { [weak self] in
+                self?.delegate?.didAddCompany(company)
             }
         } catch {
             print(error.localizedDescription)
