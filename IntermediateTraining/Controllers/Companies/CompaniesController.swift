@@ -207,6 +207,13 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         return [deleteAction, editAction]
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let empolyeesController = service.empolyeesController
+        empolyeesController.company = companies[indexPath.row]
+        navigationController?.pushViewController(empolyeesController, animated: true)
+    }
+    
     
     // MARK: CreateCompanyControllerDelegate
     

@@ -16,4 +16,8 @@ class ServiceAssembly {
     var createCompanyController: CreateCompanyViewController {
         return CreateCompanyViewController()
     }
+    
+    var empolyeesController: EmployeesTableViewController {
+        return EmployeesTableViewController()
+    }
 }
