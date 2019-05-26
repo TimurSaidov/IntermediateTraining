@@ -54,7 +54,7 @@ class CreateCompanyViewController: UIViewController, UINavigationControllerDeleg
     
     // MARK: Private Properties
     
-    private let popUpService = PopUpService()
+    private let popUpService = PopUpManager()
     
     lazy private var companyImageView: UIImageView = { // lazy private var - To add gesture recognize.
         let imageView = UIImageView(image: UIImage(named: Strings.emptyCompanyImage))

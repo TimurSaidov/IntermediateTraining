@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PopUpService {
+class PopUpManager {
     
     
     // MARK: Private Structures

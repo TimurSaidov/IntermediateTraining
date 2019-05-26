@@ -14,6 +14,7 @@ class CreateEmployeeViewController: UIViewController {
     // MARK: Public Properties
     
     var delegate: CreateEmployeeControllerDelegate?
+    var company: Company?
     
     
     // MARK: Private Structures
@@ -97,6 +98,7 @@ class CreateEmployeeViewController: UIViewController {
         
         let employee = Employee(context: context)
         employee.name = nameTextField.text
+        employee.company = company
         
         do {
             try context.save()

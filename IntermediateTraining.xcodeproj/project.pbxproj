@@ -27,7 +27,7 @@
 		39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5B82292B5E200AA34BF /* FormatterDate.swift */; };
 		39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */; };
 		39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */; };
-		39E7C5C3229305FE00AA34BF /* PopUpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5C2229305FE00AA34BF /* PopUpService.swift */; };
+		39E7C5C3229305FE00AA34BF /* PopUpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7C5C2229305FE00AA34BF /* PopUpManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,7 +53,7 @@
 		39E7C5B82292B5E200AA34BF /* FormatterDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterDate.swift; sourceTree = "<group>"; };
 		39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceAssembly.swift; sourceTree = "<group>"; };
 		39E7C5BE2292C81F00AA34BF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
-		39E7C5C2229305FE00AA34BF /* PopUpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpService.swift; sourceTree = "<group>"; };
+		39E7C5C2229305FE00AA34BF /* PopUpManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +150,6 @@
 		39C797942290557900164320 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				39E7C5C02292F8F700AA34BF /* CoreData */,
 				39E7C5C12292F8FF00AA34BF /* FormatterDate */,
 			);
 			path = Model;
@@ -177,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				39E7C5BD2292B79900AA34BF /* Service */,
+				39E7C5C02292F8F700AA34BF /* CoreData */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -186,7 +186,7 @@
 			children = (
 				39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */,
 				39E2117C22980BF4004F3DE6 /* CreateManager.swift */,
-				39E7C5C2229305FE00AA34BF /* PopUpService.swift */,
+				39E7C5C2229305FE00AA34BF /* PopUpManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -288,7 +288,7 @@
 				39C797702290072E00164320 /* CompaniesController.swift in Sources */,
 				39C7976E2290072E00164320 /* AppDelegate.swift in Sources */,
 				39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */,
-				39E7C5C3229305FE00AA34BF /* PopUpService.swift in Sources */,
+				39E7C5C3229305FE00AA34BF /* PopUpManager.swift in Sources */,
 				39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */,
 				39E2118122983ADC004F3DE6 /* CreateEmployeeControllerDelegate.swift in Sources */,
 				39E7C5BB2292B73D00AA34BF /* ServiceAssembly.swift in Sources */,

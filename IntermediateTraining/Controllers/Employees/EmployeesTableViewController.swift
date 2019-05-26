@@ -57,6 +57,7 @@ class EmployeesTableViewController: UITableViewController, CreateEmployeeControl
     @objc private func handleAddEmployee() {
         let createEmployeeController = manager.createEmployeeController
         createEmployeeController.delegate = self
+        createEmployeeController.company = company
         let navController = UINavigationController(rootViewController: createEmployeeController)
         present(navController, animated: true, completion: nil)
     }
@@ -67,16 +68,8 @@ class EmployeesTableViewController: UITableViewController, CreateEmployeeControl
     }
     
     private func fetchEmployees() {
-        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
-        let context = coreDataStack.createContext()
-        let fetchRequest: NSFetchRequest<Employee> = Employee.fetchRequest()
-        
-        do {
-            employees = try context.fetch(fetchRequest)
-            tableView.reloadData()
-        } catch {
-            print(error.localizedDescription)
-        }
+        guard let companyEmployees = company?.employees?.allObjects as? [Employee] else { return }
+        employees = companyEmployees
     }
     
 
