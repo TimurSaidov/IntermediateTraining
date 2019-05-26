@@ -18,6 +18,7 @@ class PopUpManager {
         static let titleDeletePhoto = "Удалить изображение"
         static let titleCancel = "Отмена"
         static let emptyCompanyImage = "select_photo_empty"
+        static let ok = "OK"
     }
     
     
@@ -45,6 +46,15 @@ class PopUpManager {
             }
         }
         alertController.addAction(cancel)
+        
+        return alertController
+    }
+    
+    func makeErrorPopUp(title: String?,
+                        message: String?) -> UIAlertController {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: Strings.ok, style: .default, handler: nil)
+        alertController.addAction(ok)
         
         return alertController
     }

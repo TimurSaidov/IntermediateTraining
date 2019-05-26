@@ -83,7 +83,12 @@ class EmployeesTableViewController: UITableViewController, CreateEmployeeControl
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.cellID, for: indexPath)
 
         let employee = employees[indexPath.row]
-        cell.textLabel?.text = employee.name
+        if let birthday = employee.employeeInformation?.birthday {
+            let birthdayText = FormatterDate.df.string(from: birthday)
+            cell.textLabel?.text = "\(employee.name ?? " ")  \(birthdayText)"
+        } else {
+            cell.textLabel?.text = employee.name
+        }
         
         return cell
     }

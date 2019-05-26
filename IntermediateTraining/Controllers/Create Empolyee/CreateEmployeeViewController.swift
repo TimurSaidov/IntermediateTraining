@@ -25,10 +25,16 @@ class CreateEmployeeViewController: UIViewController {
         static let name = "Name"
         static let enterName = "Enter name"
         static let save = "Save"
+        static let birthday = "Birthday"
+        static let enterBirthday = "MM/dd/yyyy"
+        static let emptyFieldsPopUpTitle = "Empty fields"
+        static let emptyFieldsPopUpMessage = "Please enter all fields"
+        static let invalidDatePopUpTitle = "Invalid birthday"
+        static let invalidDatePopUpMessage = "Please enter birthday in a correct format: MM/dd/yyyy"
     }
     
     private enum Numbers {
-        static let lightBlueViewHeight: CGFloat = 50
+        static let lightBlueViewHeight: CGFloat = 100
         static let topConstant: CGFloat = 8
         static let leftConstant: CGFloat = 16
         static let nameLabelWidth: CGFloat = 100
@@ -38,6 +44,8 @@ class CreateEmployeeViewController: UIViewController {
     
     
     // MARK: Private Properties
+    
+    private let popUpManager = PopUpManager()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -53,6 +61,20 @@ class CreateEmployeeViewController: UIViewController {
         return textfield
     }()
     
+    private let birthdayLabel: UILabel = {
+        let label = UILabel()
+        label.text = Strings.birthday
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let birthdayTextField: UITextField = {
+        let textfield = UITextField()
+        textfield.placeholder = Strings.enterBirthday
+        textfield.translatesAutoresizingMaskIntoConstraints = false
+        return textfield
+    }()
+    
     
     // MARK: Lifecycle
     
@@ -64,7 +86,7 @@ class CreateEmployeeViewController: UIViewController {
     }
     
     deinit {
-        print("CreateEmployeeViewController  \(#function)")
+        print("CreateEmployeeViewController \(#function)")
     }
     
     
@@ -93,12 +115,34 @@ class CreateEmployeeViewController: UIViewController {
     }
     
     @objc private func handleSave() {
-        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
+        guard
+            let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack,
+            let name = nameTextField.text,
+            name != String.empty,
+            name != String.space,
+            let birthdayText = birthdayTextField.text,
+            birthdayText != String.empty,
+            birthdayText != String.space
+            else {
+                let alertController = popUpManager.makeErrorPopUp(title: Strings.emptyFieldsPopUpTitle, message: Strings.emptyFieldsPopUpMessage)
+                present(alertController, animated: true, completion: nil)
+                return
+        }
+        guard let birthday = FormatterDate.createDate(from: birthdayText) else {
+            let alertController = popUpManager.makeErrorPopUp(title: Strings.invalidDatePopUpTitle, message: Strings.invalidDatePopUpMessage)
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
         let context = coreDataStack.createContext()
         
+        let employeeInformation = EmployeeInformation(context: context)
+        employeeInformation.birthday = birthday
+        
         let employee = Employee(context: context)
-        employee.name = nameTextField.text
+        employee.name = name
         employee.company = company
+        employee.employeeInformation = employeeInformation
         
         do {
             try context.save()
@@ -126,5 +170,17 @@ class CreateEmployeeViewController: UIViewController {
         nameTextField.leftAnchor.constraint(equalTo: nameLabel.rightAnchor).isActive = true
         nameTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: Numbers.leftConstant).isActive = true
         nameTextField.heightAnchor.constraint(equalToConstant: Numbers.nameLabelHeight).isActive = true
+        
+        view.addSubview(birthdayLabel)
+        birthdayLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
+        birthdayLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: Numbers.leftConstant).isActive = true
+        birthdayLabel.widthAnchor.constraint(equalToConstant: Numbers.nameLabelWidth).isActive = true
+        birthdayLabel.heightAnchor.constraint(equalToConstant: Numbers.nameLabelHeight).isActive = true
+        
+        view.addSubview(birthdayTextField)
+        birthdayTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor).isActive = true
+        birthdayTextField.leftAnchor.constraint(equalTo: birthdayLabel.rightAnchor).isActive = true
+        birthdayTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: Numbers.leftConstant).isActive = true
+        birthdayTextField.heightAnchor.constraint(equalToConstant: Numbers.nameLabelHeight).isActive = true
     }
 }

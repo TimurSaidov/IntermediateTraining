@@ -15,4 +15,12 @@ class FormatterDate {
         
         return dateFormatter
     }()
+    
+    static func createDate(from dateText: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        let date = dateFormatter.date(from: dateText)
+        
+        return date
+    }
 }
