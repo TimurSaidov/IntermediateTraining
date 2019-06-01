@@ -31,15 +31,20 @@ class CreateEmployeeViewController: UIViewController {
         static let emptyFieldsPopUpMessage = "Please enter all fields"
         static let invalidDatePopUpTitle = "Invalid birthday"
         static let invalidDatePopUpMessage = "Please enter birthday in a correct format: MM/dd/yyyy"
+        static let executive = "Executive"
+        static let senior = "Senior"
+        static let staff = "Staff"
     }
     
     private enum Numbers {
-        static let lightBlueViewHeight: CGFloat = 100
+        static let lightBlueViewHeight: CGFloat = 150
         static let topConstant: CGFloat = 8
         static let leftConstant: CGFloat = 16
+        static let rightConstant: CGFloat = -16
         static let nameLabelWidth: CGFloat = 100
         static let nameLabelHeight: CGFloat = 50
         static let quality: CGFloat = 0.75
+        static let segmentedControlHeight: CGFloat = 34
     }
     
     
@@ -73,6 +78,15 @@ class CreateEmployeeViewController: UIViewController {
         textfield.placeholder = Strings.enterBirthday
         textfield.translatesAutoresizingMaskIntoConstraints = false
         return textfield
+    }()
+    
+    private let employeeTypeSegmentedControl: UISegmentedControl = {
+        let types = [Strings.executive, Strings.senior, Strings.staff]
+        let segmentedControl = UISegmentedControl(items: types)
+        segmentedControl.tintColor = UIColor.darkBlue
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        return segmentedControl
     }()
     
     
@@ -122,7 +136,8 @@ class CreateEmployeeViewController: UIViewController {
             name != String.space,
             let birthdayText = birthdayTextField.text,
             birthdayText != String.empty,
-            birthdayText != String.space
+            birthdayText != String.space,
+            let employeeType = employeeTypeSegmentedControl.titleForSegment(at: employeeTypeSegmentedControl.selectedSegmentIndex)
             else {
                 let alertController = popUpManager.makeErrorPopUp(title: Strings.emptyFieldsPopUpTitle, message: Strings.emptyFieldsPopUpMessage)
                 present(alertController, animated: true, completion: nil)
@@ -138,6 +153,7 @@ class CreateEmployeeViewController: UIViewController {
         
         let employeeInformation = EmployeeInformation(context: context)
         employeeInformation.birthday = birthday
+        employeeInformation.type = employeeType
         
         let employee = Employee(context: context)
         employee.name = name
@@ -182,5 +198,11 @@ class CreateEmployeeViewController: UIViewController {
         birthdayTextField.leftAnchor.constraint(equalTo: birthdayLabel.rightAnchor).isActive = true
         birthdayTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: Numbers.leftConstant).isActive = true
         birthdayTextField.heightAnchor.constraint(equalToConstant: Numbers.nameLabelHeight).isActive = true
+        
+        view.addSubview(employeeTypeSegmentedControl)
+        employeeTypeSegmentedControl.topAnchor.constraint(equalTo: birthdayLabel.bottomAnchor).isActive = true
+        employeeTypeSegmentedControl.leftAnchor.constraint(equalTo: view.leftAnchor, constant: Numbers.leftConstant).isActive = true
+        employeeTypeSegmentedControl.rightAnchor.constraint(equalTo: view.rightAnchor, constant: Numbers.rightConstant).isActive = true
+        employeeTypeSegmentedControl.heightAnchor.constraint(equalToConstant: Numbers.segmentedControlHeight).isActive = true
     }
 }

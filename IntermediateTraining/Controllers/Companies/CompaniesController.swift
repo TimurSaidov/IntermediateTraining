@@ -163,6 +163,10 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         let company = companies[indexPath.row]
         cell.company = company
         
+        if indexPath.row == companies.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
+        
         return cell
     }
     
