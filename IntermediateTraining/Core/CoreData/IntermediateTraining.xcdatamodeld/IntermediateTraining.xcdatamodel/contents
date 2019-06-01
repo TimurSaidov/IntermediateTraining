@@ -16,9 +16,13 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="employee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Employee" inverseName="employeeInformation" inverseEntity="Employee" syncable="YES"/>
     </entity>
+    <entity name="Entity" representedClassName="Entity" syncable="YES" codeGenerationType="class">
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Company" positionX="-63" positionY="-18" width="128" height="105"/>
         <element name="Employee" positionX="165.328125" positionY="12.41015625" width="128" height="90"/>
         <element name="EmployeeInformation" positionX="419.96484375" positionY="27.3125" width="128" height="88"/>
+        <element name="Entity" positionX="144" positionY="36" width="128" height="60"/>
     </elements>
 </model>

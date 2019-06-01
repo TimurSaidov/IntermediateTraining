@@ -21,6 +21,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         static let delete = "Delete"
         static let edit = "Edit"
         static let reset = "Reset"
+        static let doUpdatesOnBackgroundThread = "Do Updates"
     }
     
     private enum Numbers {
@@ -67,7 +68,10 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         
         navigationController?.navigationBar.tintColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.reset, style: .plain, target: self, action: #selector(handleReset))
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(title: Strings.reset, style: .plain, target: self, action: #selector(handleReset)),
+            UIBarButtonItem(title: Strings.doUpdatesOnBackgroundThread, style: .plain, target: self, action: #selector(handleDoUpdatesOnBackgroundThread))
+            ]
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: Strings.plus), style: .plain, target: self, action: #selector(handleAddCompany))
     }
     
@@ -93,6 +97,34 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
             tableView.deleteRows(at: indexPathsToRemove, with: .top)
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    @objc private func handleDoUpdatesOnBackgroundThread() {
+        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
+        let persistentContainer = coreDataStack.persistentContainer
+        persistentContainer.performBackgroundTask { backgroundContext in
+            let fetchRequest: NSFetchRequest<Company> = Company.fetchRequest()
+            do {
+                let companies = try backgroundContext.fetch(fetchRequest)
+                
+                companies.forEach({ company in
+                    company.name = "A: \(company.name ?? "")"
+                })
+                
+                do {
+                    try backgroundContext.save()
+                    
+                    DispatchQueue.main.async {
+                        persistentContainer.viewContext.reset()
+                        self.fetchCompanies()
+                    }
+                } catch {
+                    print(error.localizedDescription)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     

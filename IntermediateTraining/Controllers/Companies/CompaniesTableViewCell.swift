@@ -55,6 +55,7 @@ class CompaniesTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = Numbers.cornerRadius
         imageView.clipsToBounds = true
+        imageView.layer.borderColor = nil
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
