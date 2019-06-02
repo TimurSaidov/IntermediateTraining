@@ -71,7 +71,7 @@ class EmployeesTableViewController: UITableViewController, CreateEmployeeControl
         tableView.backgroundColor = UIColor.darkBlue
         tableView.separatorColor = .white
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Strings.cellID)
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
     private func fetchEmployees() {
@@ -81,7 +81,7 @@ class EmployeesTableViewController: UITableViewController, CreateEmployeeControl
             return employee.employeeInformation?.type == EmployeeType.Executive.rawValue
         }
         let seniorManagement = companyEmployees.filter { employee -> Bool in
-            return employee.employeeInformation?.type == EmployeeType.Senior.rawValue
+            return employee.employeeInformation?.type == EmployeeType.SeniorManagement.rawValue
         }
         let staff = companyEmployees.filter { employee -> Bool in
             return employee.employeeInformation?.type == EmployeeType.Staff.rawValue
@@ -127,6 +127,8 @@ class EmployeesTableViewController: UITableViewController, CreateEmployeeControl
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.cellID, for: indexPath)
         cell.backgroundColor = UIColor.tealColor
+        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: Numbers.fontSize)
+        cell.textLabel?.textColor = .white
         
         let employee = allEmployees[indexPath.section][indexPath.row]
         if let birthday = employee.employeeInformation?.birthday {
@@ -155,7 +157,7 @@ class EmployeesTableViewController: UITableViewController, CreateEmployeeControl
         guard let empoyeeInformation = employee.employeeInformation else { return }
         if empoyeeInformation.type == EmployeeType.Executive.rawValue {
             sect = 0
-        } else if empoyeeInformation.type == EmployeeType.Senior.rawValue {
+        } else if empoyeeInformation.type == EmployeeType.SeniorManagement.rawValue {
             sect = 1
         } else {
             sect = 2

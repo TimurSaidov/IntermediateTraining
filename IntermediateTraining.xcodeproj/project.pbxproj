@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		39091D83229B067B0087AB41 /* IndentedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39091D82229B067B0087AB41 /* IndentedLabel.swift */; };
+		3954ABC322A3D7AE0034F91E /* CompaniesAutoUpdateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3954ABC222A3D7AE0034F91E /* CompaniesAutoUpdateTableViewController.swift */; };
+		3954ABC522A3E2BA0034F91E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3954ABC422A3E2BA0034F91E /* NetworkManager.swift */; };
+		3954ABC722A3E50A0034F91E /* JSONCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3954ABC622A3E50A0034F91E /* JSONCompany.swift */; };
+		3954ABC922A3E63B0034F91E /* JSONEmployee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3954ABC822A3E63B0034F91E /* JSONEmployee.swift */; };
 		39C7976E2290072E00164320 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7976D2290072E00164320 /* AppDelegate.swift */; };
 		39C797702290072E00164320 /* CompaniesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7976F2290072E00164320 /* CompaniesController.swift */; };
 		39C797762290072E00164320 /* IntermediateTraining.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 39C797742290072E00164320 /* IntermediateTraining.xcdatamodeld */; };
@@ -34,6 +38,11 @@
 
 /* Begin PBXFileReference section */
 		39091D82229B067B0087AB41 /* IndentedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndentedLabel.swift; sourceTree = "<group>"; };
+		3954ABC222A3D7AE0034F91E /* CompaniesAutoUpdateTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesAutoUpdateTableViewController.swift; sourceTree = "<group>"; };
+		3954ABC422A3E2BA0034F91E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		3954ABC622A3E50A0034F91E /* JSONCompany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCompany.swift; sourceTree = "<group>"; };
+		3954ABC822A3E63B0034F91E /* JSONEmployee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEmployee.swift; sourceTree = "<group>"; };
+		3954ABCA22A3F7330034F91E /* IntermediateTraining 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "IntermediateTraining 2.xcdatamodel"; sourceTree = "<group>"; };
 		39C7976A2290072E00164320 /* IntermediateTraining.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntermediateTraining.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39C7976D2290072E00164320 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39C7976F2290072E00164320 /* CompaniesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesController.swift; sourceTree = "<group>"; };
@@ -131,6 +140,7 @@
 				39C7978F22902E6200164320 /* CreateCompanyControllerDelegate.swift */,
 				39C7976F2290072E00164320 /* CompaniesController.swift */,
 				39E211702297FABE004F3DE6 /* CompaniesTableViewCell.swift */,
+				3954ABC222A3D7AE0034F91E /* CompaniesAutoUpdateTableViewController.swift */,
 			);
 			path = Companies;
 			sourceTree = "<group>";
@@ -157,6 +167,8 @@
 				39E7C5C12292F8FF00AA34BF /* FormatterDate */,
 				39091D82229B067B0087AB41 /* IndentedLabel.swift */,
 				39E401B622A2BCAB00D586E0 /* EmployeeType.swift */,
+				3954ABC622A3E50A0034F91E /* JSONCompany.swift */,
+				3954ABC822A3E63B0034F91E /* JSONEmployee.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,20 +193,21 @@
 		39E7C5BC2292B79300AA34BF /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				39E7C5BD2292B79900AA34BF /* Service */,
+				39E7C5BD2292B79900AA34BF /* Managers */,
 				39E7C5C02292F8F700AA34BF /* CoreData */,
 			);
 			path = Core;
 			sourceTree = "<group>";
 		};
-		39E7C5BD2292B79900AA34BF /* Service */ = {
+		39E7C5BD2292B79900AA34BF /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				39E7C5BA2292B73D00AA34BF /* ServiceAssembly.swift */,
 				39E2117C22980BF4004F3DE6 /* CreateManager.swift */,
 				39E7C5C2229305FE00AA34BF /* PopUpManager.swift */,
+				3954ABC422A3E2BA0034F91E /* NetworkManager.swift */,
 			);
-			path = Service;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		39E7C5C02292F8F700AA34BF /* CoreData */ = {
@@ -284,10 +297,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3954ABC522A3E2BA0034F91E /* NetworkManager.swift in Sources */,
 				39E211792298086B004F3DE6 /* CreateEmployeeViewController.swift in Sources */,
 				39E2117622980535004F3DE6 /* EmployeesTableViewController.swift in Sources */,
 				39C7979022902E6200164320 /* CreateCompanyControllerDelegate.swift in Sources */,
 				39E2117D22980BF4004F3DE6 /* CreateManager.swift in Sources */,
+				3954ABC922A3E63B0034F91E /* JSONEmployee.swift in Sources */,
 				39C797962290558D00164320 /* CoreDataStack.swift in Sources */,
 				39091D83229B067B0087AB41 /* IndentedLabel.swift in Sources */,
 				39C7978322900BC800164320 /* CustomNavigationController.swift in Sources */,
@@ -295,6 +310,7 @@
 				39C797852290165400164320 /* UIColor+Extensions.swift in Sources */,
 				39C797702290072E00164320 /* CompaniesController.swift in Sources */,
 				39C7976E2290072E00164320 /* AppDelegate.swift in Sources */,
+				3954ABC322A3D7AE0034F91E /* CompaniesAutoUpdateTableViewController.swift in Sources */,
 				39E7C5B92292B5E200AA34BF /* FormatterDate.swift in Sources */,
 				39E7C5C3229305FE00AA34BF /* PopUpManager.swift in Sources */,
 				39E7C5BF2292C81F00AA34BF /* UINavigationController+Extensions.swift in Sources */,
@@ -303,6 +319,7 @@
 				39E2117F22982C10004F3DE6 /* UIViewController+Helpers.swift in Sources */,
 				39C7978E22902CE900164320 /* String+Extensions.swift in Sources */,
 				39E211712297FABE004F3DE6 /* CompaniesTableViewCell.swift in Sources */,
+				3954ABC722A3E50A0034F91E /* JSONCompany.swift in Sources */,
 				39C7978C22901A8500164320 /* CreateCompanyViewController.swift in Sources */,
 				39C797762290072E00164320 /* IntermediateTraining.xcdatamodeld in Sources */,
 			);
@@ -501,6 +518,7 @@
 		39C797742290072E00164320 /* IntermediateTraining.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				3954ABCA22A3F7330034F91E /* IntermediateTraining 2.xcdatamodel */,
 				39C797752290072E00164320 /* IntermediateTraining.xcdatamodel */,
 			);
 			currentVersion = 39C797752290072E00164320 /* IntermediateTraining.xcdatamodel */;

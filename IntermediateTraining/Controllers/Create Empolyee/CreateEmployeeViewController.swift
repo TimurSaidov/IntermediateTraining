@@ -31,9 +31,6 @@ class CreateEmployeeViewController: UIViewController {
         static let emptyFieldsPopUpMessage = "Please enter all fields"
         static let invalidDatePopUpTitle = "Invalid birthday"
         static let invalidDatePopUpMessage = "Please enter birthday in a correct format: MM/dd/yyyy"
-        static let executive = "Executive"
-        static let senior = "Senior"
-        static let staff = "Staff"
     }
     
     private enum Numbers {
@@ -81,7 +78,7 @@ class CreateEmployeeViewController: UIViewController {
     }()
     
     private let employeeTypeSegmentedControl: UISegmentedControl = {
-        let types = [Strings.executive, Strings.senior, Strings.staff]
+        let types = [EmployeeType.Executive.rawValue, EmployeeType.SeniorManagement.rawValue, EmployeeType.Staff.rawValue]
         let segmentedControl = UISegmentedControl(items: types)
         segmentedControl.tintColor = UIColor.darkBlue
         segmentedControl.selectedSegmentIndex = 0

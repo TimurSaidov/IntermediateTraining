@@ -25,7 +25,7 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     }
     
     private enum Numbers {
-        static let height: CGFloat = 60
+        static let height: CGFloat = 50
         static let viewHeight: CGFloat = 150
         static let fontSize: CGFloat = 16
     }
@@ -103,17 +103,51 @@ class CompaniesController: UITableViewController, CreateCompanyControllerDelegat
     @objc private func handleDoUpdatesOnBackgroundThread() {
         guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else { return }
         let persistentContainer = coreDataStack.persistentContainer
-        persistentContainer.performBackgroundTask { backgroundContext in
+        // Picture 1.
+//        persistentContainer.performBackgroundTask { backgroundContext in
+//            let fetchRequest: NSFetchRequest<Company> = Company.fetchRequest()
+//            fetchRequest.fetchLimit = 1
+//        
+//            do {
+//                let companies = try backgroundContext.fetch(fetchRequest)
+//                
+//                companies.forEach({ company in
+//                    company.name = "A: \(company.name ?? "")"
+//                })
+//                
+//                do {
+//                    try backgroundContext.save()
+//                    
+//                    DispatchQueue.main.async {
+//                        persistentContainer.viewContext.reset()
+//                        self.fetchCompanies()
+//                    }
+//                } catch {
+//                    print(error.localizedDescription)
+//                }
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//        }
+        
+        // Picture 2.
+        let privateContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        privateContext.parent = persistentContainer.viewContext
+        
+        privateContext.perform {
             let fetchRequest: NSFetchRequest<Company> = Company.fetchRequest()
+            fetchRequest.fetchLimit = 1
+            
             do {
-                let companies = try backgroundContext.fetch(fetchRequest)
+                let companies = try privateContext.fetch(fetchRequest)
                 
                 companies.forEach({ company in
                     company.name = "A: \(company.name ?? "")"
                 })
                 
                 do {
-                    try backgroundContext.save()
+                    try privateContext.save()
+                    try privateContext.parent?.save()
                     
                     DispatchQueue.main.async {
                         persistentContainer.viewContext.reset()

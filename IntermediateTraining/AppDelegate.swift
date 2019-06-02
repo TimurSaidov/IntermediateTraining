@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack.shared
     let service = ServiceAssembly()
+    let networkManager = NetworkManager.shared
 
 
     // MARK: Lifecycle
@@ -59,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         let companiesController = CompaniesController(service: service)
+        let companiesAutoUpdateController = CompaniesAutoUpdateTableViewController(networkManager: networkManager, service: service)
         window?.rootViewController = CustomNavigationController(rootViewController: companiesController)
     }
 }
